@@ -1,5 +1,39 @@
-<ion-content>
-  <ion-card *ngFor="let product of products" [color]="getCardColor(product)">
+<form [formGroup]="productTypesForm">
+  <ion-list>
+    <ion-item *ngFor="let type of allTypes">
+      <label class="checkbox-label">
+        <input
+          type="checkbox"
+          [checked]="productTypesForm.get(type)?.value"
+          (change)="onCheckboxChange($event, type)">
+        {{ type }}
+      </label>
+    </ion-item>
+
+  <ion-item>
+    <ion-label><strong>Sort by price:</strong></ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-checkbox
+      slot="start"
+      [checked]="productTypesForm.get('sort')?.value === 'asc'"
+      (ionChange)="setSortDirection('asc')">
+    </ion-checkbox>
+    <ion-label>From lower</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-checkbox
+      slot="start"
+      [checked]="productTypesForm.get('sort')?.value === 'desc'"
+      (ionChange)="setSortDirection('desc')">
+    </ion-checkbox>
+    <ion-label>From higher</ion-label>
+  </ion-item>
+</ion-list>
+</form>
+
+  <ion-list *ngIf="filteredProducts.length > 0">
+  <ion-card *ngFor="let product of filteredProducts" [color]="getCardColor(product)">
     <ion-card-header>
       <ion-card-title>{{ product.getName() }}</ion-card-title>
       <ion-card-subtitle>{{ product.getType() }}</ion-card-subtitle>
@@ -13,4 +47,5 @@
       <ion-button fill="solid" (click)="deleteProduct(product.getId())">Delete</ion-button>
     </ion-card-content>
   </ion-card>
-</ion-content>
+
+</ion-list>
