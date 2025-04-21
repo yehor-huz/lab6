@@ -13,6 +13,8 @@ export class ProductFactory {
                 return new Vegetables(data.name, data.price, data.weight);
             case productType[2]:
                 return new Drinks(data.name, data.price, data.volume, data.alcohol);
+            case productType[3]:
+                return new Drinks(data.name, data.price, data.volume, data.date);
             default:
                 throw new Error("Unknown type " + data.type);
         }

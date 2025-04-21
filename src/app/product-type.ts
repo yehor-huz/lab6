@@ -1,6 +1,7 @@
-export type ProductType = 'MilkProducts' | 'Vegetables' | 'Drinks';
+export type ProductType = 'MilkProducts' | 'Vegetables' | 'Drinks' | 'ShortTermProducts';
 export const productType: ReadonlyArray<ProductType> = [
     'MilkProducts',
     'Vegetables',
-    'Drinks'
+    'Drinks',
+    'ShortTermProducts'
 ];
