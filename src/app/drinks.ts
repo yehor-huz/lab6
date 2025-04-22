@@ -2,12 +2,12 @@ import { Product } from "./product";
 
 export class Drinks extends Product{
     private volume: number;
-    private alcohol: boolean;
+    private alcohol: number;
     constructor(
         name: string,
         price: number,
         volume: number,
-        alcohol: boolean
+        alcohol: number
     ){
         super(name, price);
         if(volume < 0){throw new Error("Volume must be positive")}
@@ -28,7 +28,7 @@ export class Drinks extends Product{
         details.push('Price: ' + this.getPrice());
         //details.push('ID:' + this.getId());
         details.push('Volume: ' + this.getVolume());
-        details.push('Is alcohol? ' + this.isAlcohol());
+        details.push('Alcohol: ' + this.isAlcohol() + "%");
         return details;
     }
 

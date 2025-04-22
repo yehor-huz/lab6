@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="onCancel()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        <ion-list>
+          <ion-item>
+            <ion-label position="stacked">Name</ion-label>
+            <ion-input formControlName="name" type="text"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Price</ion-label>
+            <ion-input formControlName="price" type="number"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Type</ion-label>
+            <ion-select formControlName="type" interface="action-sheet">
+              <ion-select-option *ngFor="let type of availableTypes" [value]="type">
+                {{type}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ng-container *ngIf="currentType === 'MilkProducts'">
+            <ion-item>
+              <ion-label position="stacked">Fat (%)</ion-label>
+              <ion-input formControlName="fat" type="number"></ion-input>
+            </ion-item>
+          </ng-container>
+
+          <!-- Dynamic fields for Vegetables -->
+          <ng-container *ngIf="currentType === 'Vegetables'">
+            <ion-item>
+              <ion-label position="stacked">Weight</ion-label>
+              <ion-input formControlName="weight" type="number"></ion-input>
+            </ion-item>
+          </ng-container>
+
+          <!-- Dynamic fields for Drinks -->
+          <ng-container *ngIf="currentType === 'Drinks'">
+            <ion-item>
+              <ion-label position="stacked">Volume</ion-label>
+              <ion-input formControlName="volume" type="number"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Alcohol (%)</ion-label>
+              <ion-input formControlName="alcohol" type="number"></ion-input>
+            </ion-item>
+          </ng-container>
+
+          <!-- Dynamic fields for ShortTermProducts -->
+          <ng-container *ngIf="currentType === 'ShortTermProducts'">
+            <ion-item>
+              <ion-label position="stacked">Term</ion-label>
+              <ion-input formControlName="date" type="date"></ion-input>
+            </ion-item>
+          </ng-container>
+        </ion-list>
+
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-button type="submit" expand="block" [disabled]="!productForm.valid">
+                Add
+              </ion-button>
+            </ion-col>
+            <ion-col>
+              <ion-button type="button" expand="block" fill="outline" (click)="onCancel()">
+                Cancel
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

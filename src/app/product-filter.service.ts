@@ -30,6 +30,16 @@ export class ProductFilterService {
     this.selectedTypesSubject.next(selected);
   }
 
+  addProduct(product: IProduct): void {
+    this.allProducts = [...this.allProducts, product];
+    this.applyFilters();
+  }
+
+  removeProduct(id: Symbol): void {
+    this.allProducts = this.allProducts.filter(p => p.getId() !== id);
+    this.applyFilters();
+  }
+
   setPriceOrder(order: 'asc' | 'desc' | null): void {
     this.priceOrderSubject.next(order);
   }

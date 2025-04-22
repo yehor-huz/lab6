@@ -8,15 +8,18 @@ import { CommonModule } from '@angular/common';
 import {
   IonButton, IonCard, IonCardContent, IonCardHeader,
   IonCardSubtitle, IonCardTitle, IonContent, IonItem,
-  IonList, IonLabel, IonSelectOption, IonCheckbox } from '@ionic/angular/standalone';
+  IonList, IonLabel, IonSelectOption, IonCheckbox, IonModal, IonButtons, IonToolbar, IonHeader, IonTitle } from '@ionic/angular/standalone';
+import { AddProductComponent } from '../add-product/add-product.component';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [IonCheckbox, IonLabel, 
+  imports: [IonTitle, IonHeader, IonToolbar, IonButtons, 
+    IonCheckbox, IonLabel, IonModal,
     IonButton, IonList, IonCardSubtitle, IonCardTitle,
     IonContent, IonCard, IonCardHeader, IonCardContent,
-    IonItem, CommonModule, ReactiveFormsModule, IonSelectOption, FormsModule
+    IonItem, CommonModule, ReactiveFormsModule, 
+    IonSelectOption, FormsModule, AddProductComponent
   ],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
@@ -24,7 +27,8 @@ import {
 export class ProductListComponent implements OnInit {
   allTypes = productType;
   sortDirection: 'asc' | 'desc' | null = null;
-
+  showAddForm = false;
+  
   productTypesForm: FormGroup;
   filteredProducts: IProduct[] = [];
 
@@ -50,15 +54,22 @@ export class ProductListComponent implements OnInit {
     });
   }
 
+  toggleAddForm() {
+    this.showAddForm = !this.showAddForm;
+  }
+
+  addProduct(product: IProduct) {
+    this.filterService.addProduct(product);
+    this.showAddForm = false;
+  }
+
   onCheckboxChange(event: Event, type: ProductType) {
     const checked = (event.target as HTMLInputElement).checked;
     this.productTypesForm.get(type)?.setValue(checked);
     this.applyFilters();
   }
-  
 
   setSortDirection(direction: 'asc' | 'desc' | null) {
-
     const currentValue = this.productTypesForm.get('sort')?.value;
     const newValue = currentValue === direction ? null : direction;
     this.productTypesForm.get('sort')?.setValue(newValue);
@@ -74,7 +85,6 @@ export class ProductListComponent implements OnInit {
     const sortValue = this.productTypesForm.get('sort')?.value;
     this.filterService.setPriceOrder(sortValue);
   }
-  
 
   getCardColor(product: IProduct): string {
     const rainbowColors = ['primary', 'secondary', 'tertiary', 'success', 'warning', 'danger', 'light', 'medium', 'dark'];
@@ -85,5 +95,6 @@ export class ProductListComponent implements OnInit {
 
   deleteProduct(id: Symbol) {
     this.filteredProducts = this.filteredProducts.filter(p => p.getId() !== id);
+    this.filterService.removeProduct(id);
   }
 }

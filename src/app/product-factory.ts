@@ -2,6 +2,7 @@ import { Drinks } from "./drinks";
 import { IProduct } from "./iproduct";
 import { MilkProducts } from "./milk-products";
 import { productType } from "./product-type";
+import { ShortTermProducts } from "./short-term-products";
 import { Vegetables } from "./vegetables";
 
 export class ProductFactory {
@@ -14,7 +15,7 @@ export class ProductFactory {
             case productType[2]:
                 return new Drinks(data.name, data.price, data.volume, data.alcohol);
             case productType[3]:
-                return new Drinks(data.name, data.price, data.volume, data.date);
+                return new ShortTermProducts(data.name, data.price, data.date);
             default:
                 throw new Error("Unknown type " + data.type);
         }
