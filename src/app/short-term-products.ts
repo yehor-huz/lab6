@@ -9,10 +9,10 @@ export class ShortTermProducts extends Product{
     ) {
         if(typeof(expireDate) == 'string'){
             var tmp = new Date(expireDate)
-            if(tmp > new Date()){throw new Error('Product is spoiled')}
+            if(tmp < new Date()){throw new Error('Product is spoiled')}
         }
         else{
-            if(expireDate > new Date()){throw new Error('Product is spoiled')}
+            if(expireDate < new Date()){throw new Error('Product is spoiled')}
             var tmp = expireDate;
         }
         
@@ -34,5 +34,11 @@ export class ShortTermProducts extends Product{
 
     override getType(): string {
         return 'ShortTermProducts';
+    }
+
+    setExpireDate(date: string | Date): void {
+        let newDate = new Date(date);
+        if(date < new Date()){throw new Error("Prduct is spoiled")}
+        this.expireDate = newDate;
     }
 }

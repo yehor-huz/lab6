@@ -62,5 +62,12 @@ export class ProductFilterService {
 
     this.filteredProductsSubject.next(result);
   }
+
+  updateProduct(updatedProduct: IProduct) {
+    this.allProducts = this.allProducts.map(p => 
+      p.getId() === updatedProduct.getId() ? updatedProduct : p
+    );
+    this.applyFilters();
+  }
 }
 

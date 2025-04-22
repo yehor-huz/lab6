@@ -14,7 +14,7 @@ export class Drinks extends Product{
         this.volume = volume;
         this.alcohol = alcohol;
     }
-    isAlcohol(){
+    getAlcohol(){
         return this.alcohol;
     }
 
@@ -28,12 +28,22 @@ export class Drinks extends Product{
         details.push('Price: ' + this.getPrice());
         //details.push('ID:' + this.getId());
         details.push('Volume: ' + this.getVolume());
-        details.push('Alcohol: ' + this.isAlcohol() + "%");
+        details.push('Alcohol: ' + this.getAlcohol() + "%");
         return details;
     }
 
     override getType(): string {
         return 'Drinks';
+    }
+
+    setVolume(volume: number): void {
+        if(volume < 0){throw new Error("Volume must be positive")}
+        this.volume = volume;
+    }
+
+    setAlcohol(alcohol: number) : void{
+        if(alcohol < 0 || alcohol > 100){throw new Error("Alcohol must be positive and lesser than 100")}
+        this.alcohol = alcohol;
     }
     
 }

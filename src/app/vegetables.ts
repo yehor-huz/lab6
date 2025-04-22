@@ -28,5 +28,10 @@ export class Vegetables extends Product{
     override getType(): string {
         return 'Vegetables';
     }
+
+    setWeight(weight: number): void {
+        if(weight < 0){throw new Error("WEight must be positive")}
+        this.weight = weight;
+    }
     
 }

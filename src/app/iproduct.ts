@@ -4,4 +4,6 @@ export interface IProduct {
     getPrice(): number;
     getType(): string;
     getDetails(): string[];
+    setPrice(price: number) :void;
+    
 }

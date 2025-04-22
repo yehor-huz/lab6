@@ -32,4 +32,9 @@ export abstract class Product implements IProduct{
     getDetails() : string[] {
         return [];
     }
+
+    setPrice(price: number): void {
+        if(price < 0) {throw new Error("Invalid price")}
+        this.price = price;
+    }
 }

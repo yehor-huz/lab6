@@ -1,0 +1,78 @@
+<ion-modal [isOpen]="isOpen">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Edit {{product.getName()}}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeModal()">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    
+    <ion-content>
+      <ion-card>
+        <ion-card-content>
+          <form [formGroup]="productForm">
+            <ion-list>
+              <ion-item>
+                <ion-label position="stacked">Price</ion-label>
+                <ion-input formControlName="price" type="number"></ion-input>
+              </ion-item>
+              <ng-container *ngIf="productType === 'MilkProducts'">
+                <ion-item>
+                  <ion-label position="stacked">Fat Content (%)</ion-label>
+                  <ion-input formControlName="fat" type="number"></ion-input>
+                </ion-item>
+              </ng-container>
+
+              <ng-container *ngIf="productType === 'Vegetables'">
+                <ion-item>
+                  <ion-label position="stacked">Weight (kg)</ion-label>
+                  <ion-input formControlName="weight" type="number"></ion-input>
+                </ion-item>
+              </ng-container>
+
+              <ng-container *ngIf="productType === 'Drinks'">
+                <ion-item>
+                  <ion-label position="stacked">Volume (ml)</ion-label>
+                  <ion-input formControlName="volume" type="number"></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="stacked">Alcohol Content (%)</ion-label>
+                  <ion-input formControlName="alcohol" type="number"></ion-input>
+                </ion-item>
+              </ng-container>
+
+              <!-- ShortTerm Products Fields -->
+              <ng-container *ngIf="productType === 'ShortTermProducts'">
+                <ion-item>
+                  <ion-label position="stacked">Volume (ml)</ion-label>
+                  <ion-input formControlName="volume" type="number"></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="stacked">Expiration Date</ion-label>
+                  <ion-input formControlName="date" type="date"></ion-input>
+                </ion-item>
+              </ng-container>
+            </ion-list>
+
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-button expand="block" (click)="onSave()">
+                    Save Changes
+                  </ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button expand="block" fill="outline" (click)="closeModal()">
+                    Cancel
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </form>
+        </ion-card-content>
+      </ion-card>
+    </ion-content>
+  </ng-template>
+</ion-modal>

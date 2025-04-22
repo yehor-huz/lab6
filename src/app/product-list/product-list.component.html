@@ -14,6 +14,12 @@
     </ion-content>
   </ng-template>
 </ion-modal>
+<app-edit-product 
+  [product]="selectedProduct!"
+  [isOpen]="showEditForm"
+  (productUpdated)="updateProduct($event)"
+  (modalClosed)="showEditForm = false"
+></app-edit-product>
 <form [formGroup]="productTypesForm">
   <ion-list>
     <ion-item *ngFor="let type of allTypes">
@@ -25,7 +31,7 @@
         {{ type }}
       </label>
     </ion-item>
-
+    
   <ion-item>
     <ion-label><strong>Sort by price:</strong></ion-label>
   </ion-item>
@@ -61,6 +67,7 @@
         </ion-item>
       </ion-list>
       <ion-button fill="solid" (click)="deleteProduct(product.getId())">Delete</ion-button>
+      <ion-button (click)="openEditForm(product)">Edit</ion-button>
     </ion-card-content>
   </ion-card>
 

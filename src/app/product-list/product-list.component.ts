@@ -10,17 +10,17 @@ import {
   IonCardSubtitle, IonCardTitle, IonContent, IonItem,
   IonList, IonLabel, IonSelectOption, IonCheckbox, IonModal, IonButtons, IonToolbar, IonHeader, IonTitle } from '@ionic/angular/standalone';
 import { AddProductComponent } from '../add-product/add-product.component';
+import { EditProductComponent } from "../edit-product/edit-product.component";
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [IonTitle, IonHeader, IonToolbar, IonButtons, 
+  imports: [IonTitle, IonHeader, IonToolbar, IonButtons,
     IonCheckbox, IonLabel, IonModal,
     IonButton, IonList, IonCardSubtitle, IonCardTitle,
     IonContent, IonCard, IonCardHeader, IonCardContent,
-    IonItem, CommonModule, ReactiveFormsModule, 
-    IonSelectOption, FormsModule, AddProductComponent
-  ],
+    IonItem, CommonModule, ReactiveFormsModule,
+    IonSelectOption, FormsModule, AddProductComponent, EditProductComponent],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })
@@ -28,7 +28,8 @@ export class ProductListComponent implements OnInit {
   allTypes = productType;
   sortDirection: 'asc' | 'desc' | null = null;
   showAddForm = false;
-  
+  showEditForm = false;
+  selectedProduct: IProduct | null = null;
   productTypesForm: FormGroup;
   filteredProducts: IProduct[] = [];
 
@@ -96,5 +97,15 @@ export class ProductListComponent implements OnInit {
   deleteProduct(id: Symbol) {
     this.filteredProducts = this.filteredProducts.filter(p => p.getId() !== id);
     this.filterService.removeProduct(id);
+  }
+
+  openEditForm(product: IProduct) {
+    this.selectedProduct = product;
+    console.log(this.selectedProduct.getType())
+    this.showEditForm = true;
+  }
+  
+  updateProduct(updatedProduct: IProduct) {
+    this.showEditForm = false;
   }
 }

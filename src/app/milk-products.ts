@@ -28,5 +28,12 @@ export class MilkProducts extends Product{
     override getType(): string {
         return 'MilkProducts';
     }
+
+    setFat(fat: number): void {
+        if(fat > 85 || fat < 0){
+            throw new Error("Fat must not be higher than 85%")
+        }
+        this.fat = fat;
+    }
     
 }
