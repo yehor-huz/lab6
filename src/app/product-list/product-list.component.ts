@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ProductFirebaseService } from './../product-firebase.service';
+import { Component, inject, OnInit } from '@angular/core';
 import { ProductLoader } from '../product-loader';
 import { IProduct } from '../iproduct';
 import { ProductFilterService } from '../product-filter.service';
@@ -11,6 +12,8 @@ import {
   IonList, IonLabel, IonSelectOption, IonCheckbox, IonModal, IonButtons, IonToolbar, IonHeader, IonTitle } from '@ionic/angular/standalone';
 import { AddProductComponent } from '../add-product/add-product.component';
 import { EditProductComponent } from "../edit-product/edit-product.component";
+import { Drinks } from '../drinks';
+import { ProductFactory } from '../product-factory';
 
 @Component({
   selector: 'app-product-list',
@@ -31,6 +34,7 @@ export class ProductListComponent implements OnInit {
   showEditForm = false;
   selectedProduct: IProduct | null = null;
   productTypesForm: FormGroup;
+  ProductFirebaseService = inject(ProductFirebaseService);
   filteredProducts: IProduct[] = [];
 
   constructor(
@@ -47,9 +51,20 @@ export class ProductListComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const products = await ProductLoader.loadProductsFromUrl('https://api.jsonbin.io/v3/b/67fd1b8e8a456b7966892404');
-    this.filterService.setProducts(products);
-
+    this.ProductFirebaseService.getProducts().subscribe((products) => {
+  const productList: IProduct[] = [];
+  for (const productData of products) {
+    try {
+      const plainData = JSON.parse(JSON.stringify(productData));
+      console.log("plainData", plainData); 
+      const productItem = ProductFactory.createProduct(plainData);
+      productList.push(productItem);
+    } catch (error) {
+      console.error(`Error creating product:`, error);
+    }
+  }
+  this.filterService.setProducts(productList);
+});
     this.filterService.filteredProducts$.subscribe(filtered => {
       this.filteredProducts = filtered;
     });
@@ -88,13 +103,15 @@ export class ProductListComponent implements OnInit {
   }
 
   getCardColor(product: IProduct): string {
+    
+    console.log(product.getDetails());
     const rainbowColors = ['primary', 'secondary', 'tertiary', 'success', 'warning', 'danger', 'light', 'medium', 'dark'];
     const type = product.getType() as ProductType;
     const index = productType.indexOf(type);
     return index !== -1 ? rainbowColors[index % rainbowColors.length] : 'medium';
   }
 
-  deleteProduct(id: Symbol) {
+  deleteProduct(id: string) {
     this.filteredProducts = this.filteredProducts.filter(p => p.getId() !== id);
     this.filterService.removeProduct(id);
   }

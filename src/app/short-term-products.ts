@@ -5,6 +5,7 @@ export class ShortTermProducts extends Product{
     constructor(
         name: string,
         price: number,
+        id: string,
         expireDate: Date | string
     ) {
         if(typeof(expireDate) == 'string'){
@@ -16,7 +17,7 @@ export class ShortTermProducts extends Product{
             var tmp = expireDate;
         }
         
-        super(name, price);
+        super(name, price, id);
         this.expireDate = tmp;
     }
 

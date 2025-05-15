@@ -7,15 +7,17 @@ import { Vegetables } from "./vegetables";
 
 export class ProductFactory {
     static createProduct(data: any): IProduct {
+        console.log("data");
+        console.log(data);
         switch(data.type) {
             case productType[0]:
-                return new MilkProducts(data.name, data.price, data.fat);
+                return new MilkProducts(data.name, data.price, data.id, data.fat);
             case productType[1]:
-                return new Vegetables(data.name, data.price, data.weight);
+                return new Vegetables(data.name, data.price, data.id, data.weight);
             case productType[2]:
-                return new Drinks(data.name, data.price, data.volume, data.alcohol);
+                return new Drinks(data.name, data.price, data.id, data.volume, data.alcohol);
             case productType[3]:
-                return new ShortTermProducts(data.name, data.price, data.date);
+                return new ShortTermProducts(data.name, data.id, data.price, data.date);
             default:
                 throw new Error("Unknown type " + data.type);
         }

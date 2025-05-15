@@ -6,10 +6,11 @@ export class Drinks extends Product{
     constructor(
         name: string,
         price: number,
+        id: string,
         volume: number,
         alcohol: number
     ){
-        super(name, price);
+        super(name, price, id);
         if(volume < 0){throw new Error("Volume must be positive")}
         this.volume = volume;
         this.alcohol = alcohol;

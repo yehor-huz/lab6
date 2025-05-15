@@ -23,6 +23,8 @@ export class ProductFilterService {
 
   setProducts(products: IProduct[]): void {
     this.allProducts = products;
+    console.log("List");
+    console.log(this.allProducts)
     this.applyFilters();
   }
 
@@ -35,7 +37,7 @@ export class ProductFilterService {
     this.applyFilters();
   }
 
-  removeProduct(id: Symbol): void {
+  removeProduct(id: string): void {
     this.allProducts = this.allProducts.filter(p => p.getId() !== id);
     this.applyFilters();
   }

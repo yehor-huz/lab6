@@ -2,18 +2,18 @@ import { IProduct } from "./iproduct";
 
 export abstract class Product implements IProduct{
     private name: string;
-    private id: Symbol;
+    private id: string;
     private price: number;
-    constructor(name: string, price: number)
+    constructor(name: string, price: number, id: string)
     {
         if(name.length == 0){throw new Error("Wrong name")}
         if(price <= 0.01){throw new Error("Wrong price")}
-        this.id = Symbol();
+        this.id = id;
         this.name = name;
         this.price = price;
     }
 
-    getId(): Symbol {
+    getId(): string {
         return this.id;
     }
 

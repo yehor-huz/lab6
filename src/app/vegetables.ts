@@ -5,10 +5,11 @@ export class Vegetables extends Product{
     constructor(
         name: string,
         price: number,
+        id: string,
         weight: number
     ) {
         if(weight < 0){throw new Error('Weight must be positive')}
-        super(name, price);
+        super(name, price, id);
         this.weight = weight;
     }
 

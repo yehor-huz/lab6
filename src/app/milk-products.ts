@@ -5,10 +5,11 @@ export class MilkProducts extends Product{
     constructor(
         name: string,
         price: number,
+        id: string,
         fat: number
     ) {
         if(fat < 0 || fat > 85){throw new Error('Fat must be between 0% and 85%')}
-        super(name, price);
+        super(name, price, id);
         this.fat = fat;
     }
 
