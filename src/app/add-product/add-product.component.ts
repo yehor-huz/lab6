@@ -63,14 +63,12 @@ export class AddProductComponent implements OnInit {
   }
 
   private updateFormControls(): void {
-    // Remove old dynamic controls
     ['fat', 'weight', 'volume', 'alcohol', 'date'].forEach(control => {
       if (this.productForm.contains(control)) {
         this.productForm.removeControl(control);
       }
     });
 
-    // Add new controls based on type
     switch(this.currentType) {
       case 'MilkProducts':
         this.productForm.addControl('fat', this.fb.control('', [
