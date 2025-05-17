@@ -74,8 +74,8 @@ export class ProductListComponent implements OnInit {
     this.showAddForm = !this.showAddForm;
   }
 
-  addProduct(product: IProduct) {
-    this.filterService.addProduct(product);
+  addProduct(data: Object) {
+    this.filterService.addProduct(data);
     this.showAddForm = false;
   }
 

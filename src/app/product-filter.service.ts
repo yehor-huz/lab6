@@ -1,15 +1,19 @@
+import { ProductFirebaseService } from './product-firebase.service';
 // product-filter.service.ts
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { IProduct } from './iproduct';
 import { ProductType, productType } from './product-type';
 import { BehaviorSubject } from 'rxjs';
+import { ProductFactory } from './product-factory';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductFilterService {
-  private allProducts: IProduct[] = [];
+  firebaseService = inject(ProductFirebaseService);
 
+  private allProducts: IProduct[] = [];
+  
   private selectedTypesSubject = new BehaviorSubject<Set<ProductType>>(new Set());
   private priceOrderSubject = new BehaviorSubject<'asc' | 'desc' | null>(null);
   private filteredProductsSubject = new BehaviorSubject<IProduct[]>([]);
@@ -32,8 +36,13 @@ export class ProductFilterService {
     this.selectedTypesSubject.next(selected);
   }
 
-  addProduct(product: IProduct): void {
-    this.allProducts = [...this.allProducts, product];
+  addProduct(product: Object): void {
+    this.firebaseService.addProduct(product).subscribe((addedId) => {
+      product = {...product, id: addedId};
+      const temp = ProductFactory.createProduct(product);
+      this.allProducts = [...this.allProducts, temp];
+    }
+    )
     this.applyFilters();
   }
 

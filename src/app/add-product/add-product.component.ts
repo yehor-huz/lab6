@@ -38,7 +38,7 @@ import { dateValidate } from '../datevalidator';
 })
 export class AddProductComponent implements OnInit {
   @Input() showForm: boolean = false;
-  @Output() productAdded = new EventEmitter<IProduct>();
+  @Output() productAdded = new EventEmitter<Object>();
   @Output() formClosed = new EventEmitter<void>();
 
   productForm: FormGroup;
@@ -109,8 +109,7 @@ export class AddProductComponent implements OnInit {
   onSubmit(): void {
     if (this.productForm.valid) {
       const formData = this.productForm.value;
-      const product = ProductFactory.createProduct(formData);
-      this.productAdded.emit(product);
+      this.productAdded.emit(formData);
       this.resetForm();
     }
   }
