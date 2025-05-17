@@ -48,6 +48,7 @@ export class ProductFilterService {
 
   removeProduct(id: string): void {
     this.allProducts = this.allProducts.filter(p => p.getId() !== id);
+    this.firebaseService.deleteProduct(id);
     this.applyFilters();
   }
 
