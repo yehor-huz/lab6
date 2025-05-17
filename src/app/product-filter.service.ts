@@ -79,6 +79,7 @@ export class ProductFilterService {
     this.allProducts = this.allProducts.map(p => 
       p.getId() === updatedProduct.getId() ? updatedProduct : p
     );
+    this.firebaseService.updateProduct(updatedProduct);
     this.applyFilters();
   }
 }

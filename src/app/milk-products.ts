@@ -17,17 +17,21 @@ export class MilkProducts extends Product{
         return this.fat;
     }
 
-    override getDetails(): string[] {
+    override getDetails(): Object {
+        return {name: this.getName(), price: this.getPrice(), fat: this.getFat(), type: this.getType()};
+    }
+
+    override getType(): string {
+        return 'MilkProducts';
+    }
+
+    override getStrDetails(): string[] {
         let details = [];
         details.push('Name:' + this.getName());
         details.push('Price: ' + this.getPrice());
         //details.push('ID:' + this.getId());
         details.push('Fat: ' + this.getFat() + "%");
         return details;
-    }
-
-    override getType(): string {
-        return 'MilkProducts';
     }
 
     setFat(fat: number): void {

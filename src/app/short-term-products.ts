@@ -25,12 +25,9 @@ export class ShortTermProducts extends Product{
         return this.expireDate;
     }
 
-    override getDetails(): string[] {
-        let details = [];
-        details.push('Name:' + this.getName());
-        details.push('Price: ' + this.getPrice());
-        details.push('Expire date: ' + this.getExpireDate().toDateString());
-        return details;
+
+        override getDetails(): Object {
+        return {name: this.getName(), price: this.getPrice(), expireDate: this.getExpireDate(), type: this.getType()};
     }
 
     override getType(): string {
@@ -41,5 +38,14 @@ export class ShortTermProducts extends Product{
         let newDate = new Date(date);
         if(date < new Date()){throw new Error("Prduct is spoiled")}
         this.expireDate = newDate;
+    }
+
+        override getStrDetails(): string[] {
+        let details = [];
+        details.push('Name:' + this.getName());
+        details.push('Price: ' + this.getPrice());
+        //details.push('ID:' + this.getId());
+        details.push('Expire date: ' + this.getExpireDate().toDateString());
+        return details;
     }
 }

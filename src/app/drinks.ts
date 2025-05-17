@@ -23,14 +23,8 @@ export class Drinks extends Product{
         return this.volume;
     }
 
-    override getDetails(): string[] {
-        let details = [];
-        details.push('Name:' + this.getName());
-        details.push('Price: ' + this.getPrice());
-        //details.push('ID:' + this.getId());
-        details.push('Volume: ' + this.getVolume());
-        details.push('Alcohol: ' + this.getAlcohol() + "%");
-        return details;
+    override getDetails(): Object {
+        return {name: this.getName(), price: this.getPrice(), volume: this.getVolume(), alcohol: this.getAlcohol(), type: this.getType()};
     }
 
     override getType(): string {
@@ -45,6 +39,16 @@ export class Drinks extends Product{
     setAlcohol(alcohol: number) : void{
         if(alcohol < 0 || alcohol > 100){throw new Error("Alcohol must be positive and lesser than 100")}
         this.alcohol = alcohol;
+    }
+
+        override getStrDetails(): string[] {
+        let details = [];
+        details.push('Name:' + this.getName());
+        details.push('Price: ' + this.getPrice());
+        //details.push('ID:' + this.getId());
+        details.push('Alcohol: ' + this.getAlcohol() + "%");
+        details.push('Volume ' + this.getVolume() );
+        return details;
     }
     
 }

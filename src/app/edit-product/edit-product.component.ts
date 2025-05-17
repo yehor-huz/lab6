@@ -114,6 +114,7 @@ export class EditProductComponent implements OnInit {
     }
 
     this.productUpdated.emit(this.product);
+    
     this.closeModal();
   }
 

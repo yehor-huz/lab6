@@ -17,13 +17,8 @@ export class Vegetables extends Product{
         return this.weight;
     }
 
-    override getDetails(): string[] {
-        let details = [];
-        details.push('Name:' + this.getName());
-        details.push('Price: ' + this.getPrice());
-        //details.push('ID:' + this.getId());
-        details.push('Weight: ' + this.getWeight());
-        return details;
+    override getDetails(): Object {
+        return {name: this.getName(), price: this.getPrice(), weight: this.getWeight(), type: this.getType()};
     }
 
     override getType(): string {
@@ -33,6 +28,15 @@ export class Vegetables extends Product{
     setWeight(weight: number): void {
         if(weight < 0){throw new Error("WEight must be positive")}
         this.weight = weight;
+    }
+
+    override getStrDetails(): string[] {
+        let details = [];
+        details.push('Name:' + this.getName());
+        details.push('Price: ' + this.getPrice());
+        //details.push('ID:' + this.getId());
+        details.push('Weight: ' + this.getWeight());
+        return details;
     }
     
 }

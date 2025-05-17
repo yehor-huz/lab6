@@ -29,12 +29,16 @@ export abstract class Product implements IProduct{
         return 'Product';
     }
 
-    getDetails() : string[] {
-        return [];
+    getDetails() : Object {
+        return {};
     }
 
     setPrice(price: number): void {
         if(price < 0) {throw new Error("Invalid price")}
         this.price = price;
+    }
+
+    getStrDetails() : string[]{
+        return [];
     }
 }

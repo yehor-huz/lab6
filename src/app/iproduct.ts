@@ -3,7 +3,8 @@ export interface IProduct {
     getName(): string;
     getPrice(): number;
     getType(): string;
-    getDetails(): string[];
+    getDetails(): Object;
+    getStrDetails() : string[];
     setPrice(price: number) :void;
     
 }

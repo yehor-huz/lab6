@@ -123,6 +123,9 @@ export class ProductListComponent implements OnInit {
   }
   
   updateProduct(updatedProduct: IProduct) {
+    this.filterService.updateProduct(updatedProduct);
     this.showEditForm = false;
   }
+
+
 }

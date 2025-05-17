@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, deleteDoc, doc, Firestore } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, setDoc } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
 import { IProduct } from './iproduct';
 
@@ -24,6 +24,12 @@ export class ProductFirebaseService {
   deleteProduct(id: string): Observable<void> {
     const docRef = doc(this.firestore, 'products/' + id);
     const promise = deleteDoc(docRef);
+    return from(promise);
+  }
+  
+  updateProduct(product: IProduct): Observable<void> {
+    const docRef = doc(this.firestore, 'products/' + product.getId());
+    const promise = setDoc(docRef, product.getDetails());
     return from(promise);
   }
   
