@@ -13,7 +13,7 @@
         <ion-list>
           <ion-item>
             <ion-label position="stacked">Type</ion-label>
-            <ion-select formControlName="type" (ionChange)="onTypeChange($event.detail.value)">
+            <ion-select formControlName="type" interface="action-sheet" (ionChange)="onTypeChange($event.detail.value)">
               <ion-select-option *ngFor="let type of availableTypes" [value]="type">
                 {{ type }}
               </ion-select-option>

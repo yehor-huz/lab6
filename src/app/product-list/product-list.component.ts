@@ -36,6 +36,8 @@ export class ProductListComponent implements OnInit {
   productTypesForm: FormGroup;
   ProductFirebaseService = inject(ProductFirebaseService);
   filteredProducts: IProduct[] = [];
+  showDeleteCategoryModal = false;
+  selectedCategories: Set<ProductType> = new Set();
 
   constructor(
     private filterService: ProductFilterService,
@@ -130,5 +132,26 @@ openEditForm(product: IProduct) {
     this.showEditForm = false;
   }
 
+    deleteSelectedCategories(): void {
+    const productsToDelete = this.filteredProducts.filter(
+      product => this.selectedCategories.has(product.getType() as ProductType)
+    );
+
+    // Видаляємо кожен продукт
+    productsToDelete.forEach(product => {
+      this.filterService.removeProduct(product.getId());
+    });
+
+    this.selectedCategories.clear();
+    this.showDeleteCategoryModal = false;
+  }
+
+  toggleCategorySelection(type: ProductType): void {
+    if (this.selectedCategories.has(type)) {
+      this.selectedCategories.delete(type);
+    } else {
+      this.selectedCategories.add(type);
+    }
+  }
 
 }
