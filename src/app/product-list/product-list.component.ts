@@ -116,14 +116,17 @@ export class ProductListComponent implements OnInit {
     this.filterService.removeProduct(id);
   }
 
-  openEditForm(product: IProduct) {
-    this.selectedProduct = product;
-    console.log(this.selectedProduct.getType())
-    this.showEditForm = true;
-  }
+openEditForm(product: IProduct) {
+  this.selectedProduct = product;
+  this.showEditForm = true;
+  console.log('Opening edit form for:', product); 
+}
   
-  updateProduct(updatedProduct: IProduct) {
-    this.filterService.updateProduct(updatedProduct);
+  handleProductUpdate(updateData: {oldId: string, newProduct: Object}) {
+    this.filterService.removeProduct(updateData.oldId);
+    
+    this.filterService.addProduct(updateData.newProduct);
+    
     this.showEditForm = false;
   }
 

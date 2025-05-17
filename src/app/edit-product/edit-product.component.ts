@@ -1,31 +1,23 @@
-import { Component, EventEmitter, Input, Output, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { IProduct } from '../iproduct';
+import { ProductType, productType } from '../product-type';
+import { ProductFactory } from '../product-factory';
 import {
   IonButton, IonContent, IonHeader, IonTitle, IonToolbar,
   IonInput, IonItem, IonLabel, IonList, IonCard, IonCardContent,
-  IonGrid, IonRow, IonCol, IonButtons, IonModal } from '@ionic/angular/standalone';
+  IonGrid, IonRow, IonCol, IonButtons, IonModal, IonSelect, IonSelectOption
+} from '@ionic/angular/standalone';
 import { NgIf, CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-edit-product',
   standalone: true,
-  imports: [IonModal, 
-    IonButton,
-    IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
-    IonInput,
-    IonItem,
-    IonLabel,
-    IonList,
-    IonCard,
-    IonCardContent,
-    IonGrid,
-    IonRow,
-    IonCol,
-    IonButtons, ReactiveFormsModule, NgIf
+  imports: [
+    IonModal, IonButton, IonContent, IonHeader, IonTitle, IonToolbar,
+    IonInput, IonItem, IonLabel, IonList, IonCard, IonCardContent,
+    IonGrid, IonRow, IonCol, IonButtons, IonSelect, IonSelectOption,
+    ReactiveFormsModule, NgIf, CommonModule
   ],
   templateUrl: './edit-product.component.html',
   styleUrls: ['./edit-product.component.scss']
@@ -33,89 +25,128 @@ import { NgIf, CommonModule } from '@angular/common';
 export class EditProductComponent implements OnInit {
   @Input() product!: IProduct;
   @Input() isOpen = false;
-  @Output() productUpdated = new EventEmitter<IProduct>();
+  @Output() productUpdated = new EventEmitter<{oldId: string, newProduct: Object}>();
   @Output() modalClosed = new EventEmitter<void>();
 
   productForm: FormGroup;
-  productType: string;
+  availableTypes = productType;
+  currentType: ProductType;
 
   constructor(private fb: FormBuilder) {
+    this.currentType = productType[0];
     this.productForm = this.fb.group({
-      price: [0],
-      weight: [0],
-      volume: [0],
-      alcohol: [0],
-      fat: [0],
-      date: ['']
+      type: [this.currentType, Validators.required],
+      name: ['', Validators.required],
+      price: [0, Validators.required],
+      // Динамічні поля будуть додані/видалені в runtime
     });
-    this.productType = '';
   }
 
   ngOnInit(): void {
     if (this.product) {
-      this.productType = this.product.getType();
-      console.log(this.productType);
       this.initializeForm();
     }
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['product'] && changes['product'].currentValue) {
-      this.productType = this.product.getType();
-      this.initializeForm();
-    }}
-
   private initializeForm(): void {
-    this.productForm.patchValue({
-      price: this.product.getPrice()
+    this.currentType = this.product.getType() as ProductType;
+    
+    this.productForm = this.fb.group({
+      type: [this.currentType, Validators.required],
+      name: [this.product.getName(), Validators.required],
+      price: [this.product.getPrice(), Validators.required]
     });
-    console.log(this.productType);
 
-    switch(this.productType) {
+    this.updateFormControls();
+
+    // Заповнюємо специфічні поля
+    switch(this.currentType) {
       case 'MilkProducts':
-        this.productForm.patchValue({ fat: (this.product as any).getFat() });
+        this.productForm.addControl('fat', this.fb.control((this.product as any).getFat(), Validators.required));
         break;
       case 'Vegetables':
-        this.productForm.patchValue({ weight: (this.product as any).getWeight() });
+        this.productForm.addControl('weight', this.fb.control((this.product as any).getWeight(), Validators.required));
         break;
       case 'Drinks':
-        this.productForm.patchValue({ 
-          volume: (this.product as any).getVolume(),
-          alcohol: (this.product as any).getAlcohol() 
-        });
+        this.productForm.addControl('volume', this.fb.control((this.product as any).getVolume(), Validators.required));
+        this.productForm.addControl('alcohol', this.fb.control((this.product as any).getAlcohol(), Validators.required));
         break;
       case 'ShortTermProducts':
-        this.productForm.patchValue({ 
-          volume: (this.product as any).getVolume(),
-          date: (this.product as any).getExpireDate() 
-        });
+        this.productForm.addControl('volume', this.fb.control((this.product as any).getVolume(), Validators.required));
+        this.productForm.addControl('date', this.fb.control((this.product as any).getExpireDate(), Validators.required));
+        break;
+    }
+  }
+
+  onTypeChange(newType: ProductType): void {
+    if (newType !== this.currentType) {
+      this.currentType = newType;
+      this.updateFormControls();
+    }
+  }
+
+  private updateFormControls(): void {
+    // Видаляємо всі специфічні контроли
+    ['fat', 'weight', 'volume', 'alcohol', 'date'].forEach(control => {
+      if (this.productForm.contains(control)) {
+        this.productForm.removeControl(control);
+      }
+    });
+
+    // Додаємо необхідні контроли для поточного типу
+    switch(this.currentType) {
+      case 'MilkProducts':
+        this.productForm.addControl('fat', this.fb.control(0, Validators.required));
+        break;
+      case 'Vegetables':
+        this.productForm.addControl('weight', this.fb.control(0, Validators.required));
+        break;
+      case 'Drinks':
+        this.productForm.addControl('volume', this.fb.control(0, Validators.required));
+        this.productForm.addControl('alcohol', this.fb.control(0, Validators.required));
+        break;
+      case 'ShortTermProducts':
+        this.productForm.addControl('volume', this.fb.control(0, Validators.required));
+        this.productForm.addControl('date', this.fb.control('', Validators.required));
         break;
     }
   }
 
   onSave(): void {
-    this.product.setPrice(this.productForm.value.price);
+    if (this.productForm.invalid) return;
 
-    switch(this.productType) {
-      case 'MilkProducts':
-        (this.product as any).setFat(this.productForm.value.fat);
-        break;
-      case 'Vegetables':
-        (this.product as any).setWeight(this.productForm.value.weight);
-        break;
-      case 'Drinks':
-        (this.product as any).setVolume(this.productForm.value.volume);
-        (this.product as any).setAlcohol(this.productForm.value.alcohol);
-        break;
-      case 'ShortTermProducts':
-        (this.product as any).setVolume(this.productForm.value.volume);
-        (this.product as any).setExpireDate(this.productForm.value.date);
-        break;
-    }
+    const formData = this.productForm.value;
+    const oldId = this.product.getId();
 
-    this.productUpdated.emit(this.product);
-    
+    // Створюємо об'єкт для нового продукту (без ID)
+    const newProductData = {
+      type: formData.type,
+      name: formData.name,
+      price: formData.price,
+      ...this.getTypeSpecificData(formData)
+    };
+
+    this.productUpdated.emit({
+      oldId: oldId,
+      newProduct: newProductData
+    });
+
     this.closeModal();
+  }
+
+  private getTypeSpecificData(formData: any): any {
+    switch(this.currentType) {
+      case 'MilkProducts':
+        return { fat: formData.fat };
+      case 'Vegetables':
+        return { weight: formData.weight };
+      case 'Drinks':
+        return { volume: formData.volume, alcohol: formData.alcohol };
+      case 'ShortTermProducts':
+        return { volume: formData.volume, date: formData.date };
+      default:
+        return {};
+    }
   }
 
   closeModal(): void {

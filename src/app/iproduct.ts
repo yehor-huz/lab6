@@ -6,5 +6,6 @@ export interface IProduct {
     getDetails(): Object;
     getStrDetails() : string[];
     setPrice(price: number) :void;
+    setName(name: string): void;
     
 }

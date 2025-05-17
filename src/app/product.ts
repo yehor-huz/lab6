@@ -30,7 +30,7 @@ export abstract class Product implements IProduct{
     }
 
     getDetails() : Object {
-        return {};
+        return {name: this.getName(), price: this.getPrice(), type: this.getType()};
     }
 
     setPrice(price: number): void {
@@ -39,6 +39,13 @@ export abstract class Product implements IProduct{
     }
 
     getStrDetails() : string[]{
-        return [];
+        let details = [];
+        details.push('Name:' + this.getName());
+        details.push('Price: ' + this.getPrice());
+        return details;
+    }
+
+    setName(name: string): void {
+        this.name = name;
     }
 }
