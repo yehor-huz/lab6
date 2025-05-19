@@ -5,3 +5,4 @@ export const productType: ReadonlyArray<ProductType> = [
     'Drinks',
     'ShortTermProducts'
 ];
+

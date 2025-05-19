@@ -86,14 +86,12 @@ export class EditProductComponent implements OnInit {
   }
 
   private updateFormControls(): void {
-    // Видаляємо всі специфічні контроли
     ['fat', 'weight', 'volume', 'alcohol', 'date'].forEach(control => {
       if (this.productForm.contains(control)) {
         this.productForm.removeControl(control);
       }
     });
 
-    // Додаємо необхідні контроли для поточного типу
     switch(this.currentType) {
       case 'MilkProducts':
         this.productForm.addControl('fat', this.fb.control(0, Validators.required));
@@ -118,7 +116,6 @@ export class EditProductComponent implements OnInit {
     const formData = this.productForm.value;
     const oldId = this.product.getId();
 
-    // Створюємо об'єкт для нового продукту (без ID)
     const newProductData = {
       type: formData.type,
       name: formData.name,

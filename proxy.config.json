@@ -1,0 +1,10 @@
+{
+  "/api": {
+    "target": "https://api.realworld.io",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": ""
+    }
+  }
+}

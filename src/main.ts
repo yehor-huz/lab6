@@ -6,6 +6,8 @@ import {provideFirebaseApp, initializeApp} from '@angular/fire/app'
 import {provideFirestore, getFirestore} from '@angular/fire/firestore'
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './app/auth.interceptor';
 
 
 bootstrapApplication(AppComponent, {
@@ -14,6 +16,7 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-    provideFirestore(() => getFirestore())
+    provideFirestore(() => getFirestore()),
+    provideHttpClient(withInterceptors([authInterceptor]))
   ],
 });

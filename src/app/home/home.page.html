@@ -1,11 +1,51 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Lab 6
-    </ion-title>
+    <ion-title>Lab 6</ion-title>
+    <ion-buttons slot="end">
+      <ion-button    (click)="openRegisterModal()" color="primary">Register</ion-button>
+    </ion-buttons>
+      <ion-buttons slot="end">
+      <ion-button  (click)="openLoginModal()" color="primary">Login</ion-button>
+    </ion-buttons>
+    
+      <ion-buttons slot="end">
+      <ion-button  (click)="logOut()" color="danger">Logout</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-<app-product-list></app-product-list>
+  <app-product-list></app-product-list>
+  
+  <ion-modal [isOpen]="isRegisterOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Register</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeRegisterModal()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <app-register (success)="closeRegisterModal()"></app-register>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="isLoginOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Login</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeLoginModal()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <app-login (success)="closeLoginModal()"></app-login>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

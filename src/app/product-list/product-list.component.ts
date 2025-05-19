@@ -5,7 +5,7 @@ import { IProduct } from '../iproduct';
 import { ProductFilterService } from '../product-filter.service';
 import { ProductType, productType } from '../product-type';
 import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import {
   IonButton, IonCard, IonCardContent, IonCardHeader,
   IonCardSubtitle, IonCardTitle, IonContent, IonItem,
@@ -14,6 +14,7 @@ import { AddProductComponent } from '../add-product/add-product.component';
 import { EditProductComponent } from "../edit-product/edit-product.component";
 import { Drinks } from '../drinks';
 import { ProductFactory } from '../product-factory';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-product-list',
@@ -23,11 +24,12 @@ import { ProductFactory } from '../product-factory';
     IonButton, IonList, IonCardSubtitle, IonCardTitle,
     IonContent, IonCard, IonCardHeader, IonCardContent,
     IonItem, CommonModule, ReactiveFormsModule,
-    IonSelectOption, FormsModule, AddProductComponent, EditProductComponent],
+    IonSelectOption, FormsModule, AddProductComponent, EditProductComponent, NgIf],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent implements OnInit {
+  authService = inject(AuthService);
   allTypes = productType;
   sortDirection: 'asc' | 'desc' | null = null;
   showAddForm = false;
