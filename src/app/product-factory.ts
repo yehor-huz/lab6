@@ -32,7 +32,7 @@ export class ProductFactory {
                 if(!data.date){
                     data.date = " "
                 }
-                return new ShortTermProducts(data.name, data.id, data.price, data.date);
+                return new ShortTermProducts(data.name,data.price, data.id, data.date);
             default:
                 throw new Error("Unknown type " + data.type);
         }

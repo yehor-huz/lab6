@@ -108,7 +108,7 @@
 </form>
 
   <ion-list *ngIf="filteredProducts.length > 0">
-  <ion-card *ngFor="let product of filteredProducts" [color]="getCardColor(product)">
+  <ion-card *ngFor="let product of filteredProducts | sortByExpireDate : 'asc'" [color]="getCardColor(product)">
     <ion-card-header>
       <ion-card-title>{{ product.getName() }}</ion-card-title>
       <ion-card-subtitle>{{ product.getType() }}</ion-card-subtitle>
@@ -116,7 +116,7 @@
     <ion-card-content>
       <ion-list>
         <ion-item *ngFor="let detail of product.getStrDetails()">
-          {{ detail }}
+          {{ detail}}
         </ion-item>
       </ion-list>
       <ion-button *ngIf="this.authService.currentUserSignal()"  fill="solid" color="danger" (click)="deleteProduct(product.getId())">Delete</ion-button>

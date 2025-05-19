@@ -1,3 +1,4 @@
+import { CurrencyPipe } from "@angular/common";
 import { Product } from "./product";
 
 export class MilkProducts extends Product{
@@ -29,7 +30,6 @@ export class MilkProducts extends Product{
         let details = [];
         details.push('Name:' + this.getName());
         details.push('Price: ' + this.getPrice());
-        //details.push('ID:' + this.getId());
         details.push('Fat: ' + this.getFat() + "%");
         return details;
     }

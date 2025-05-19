@@ -15,6 +15,7 @@ import { EditProductComponent } from "../edit-product/edit-product.component";
 import { Drinks } from '../drinks';
 import { ProductFactory } from '../product-factory';
 import { AuthService } from '../auth.service';
+import {SortByExpireDatePipe } from "../sort-by-date.pipe";
 
 @Component({
   selector: 'app-product-list',
@@ -24,7 +25,7 @@ import { AuthService } from '../auth.service';
     IonButton, IonList, IonCardSubtitle, IonCardTitle,
     IonContent, IonCard, IonCardHeader, IonCardContent,
     IonItem, CommonModule, ReactiveFormsModule,
-    IonSelectOption, FormsModule, AddProductComponent, EditProductComponent, NgIf],
+    IonSelectOption, FormsModule, AddProductComponent, EditProductComponent, NgIf, SortByExpireDatePipe],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })

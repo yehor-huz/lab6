@@ -38,7 +38,6 @@ export class EditProductComponent implements OnInit {
       type: [this.currentType, Validators.required],
       name: ['', Validators.required],
       price: [0, Validators.required],
-      // Динамічні поля будуть додані/видалені в runtime
     });
   }
 
@@ -59,7 +58,6 @@ export class EditProductComponent implements OnInit {
 
     this.updateFormControls();
 
-    // Заповнюємо специфічні поля
     switch(this.currentType) {
       case 'MilkProducts':
         this.productForm.addControl('fat', this.fb.control((this.product as any).getFat(), Validators.required));
@@ -72,7 +70,6 @@ export class EditProductComponent implements OnInit {
         this.productForm.addControl('alcohol', this.fb.control((this.product as any).getAlcohol(), Validators.required));
         break;
       case 'ShortTermProducts':
-        this.productForm.addControl('volume', this.fb.control((this.product as any).getVolume(), Validators.required));
         this.productForm.addControl('date', this.fb.control((this.product as any).getExpireDate(), Validators.required));
         break;
     }
@@ -104,7 +101,6 @@ export class EditProductComponent implements OnInit {
         this.productForm.addControl('alcohol', this.fb.control(0, Validators.required));
         break;
       case 'ShortTermProducts':
-        this.productForm.addControl('volume', this.fb.control(0, Validators.required));
         this.productForm.addControl('date', this.fb.control('', Validators.required));
         break;
     }
@@ -140,7 +136,7 @@ export class EditProductComponent implements OnInit {
       case 'Drinks':
         return { volume: formData.volume, alcohol: formData.alcohol };
       case 'ShortTermProducts':
-        return { volume: formData.volume, date: formData.date };
+        return {date: formData.date };
       default:
         return {};
     }

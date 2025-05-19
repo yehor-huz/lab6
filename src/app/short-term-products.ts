@@ -26,7 +26,7 @@ export class ShortTermProducts extends Product{
     }
 
 
-        override getDetails(): Object {
+    override getDetails(): Object {
         return {name: this.getName(), price: this.getPrice(), expireDate: this.getExpireDate(), type: this.getType()};
     }
 
