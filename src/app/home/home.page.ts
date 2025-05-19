@@ -1,6 +1,4 @@
-import { UserInterface } from './../user.interface';
-import { AuthService } from './../auth.service';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { 
   IonHeader, 
   IonToolbar, 
@@ -8,12 +6,17 @@ import {
   IonContent, 
   IonButton,
   IonButtons,
-  IonModal
+  IonModal,
+  IonMenu,
+  IonMenuButton,
+  IonIcon
 } from '@ionic/angular/standalone';
 import { ProductListComponent } from "../product-list/product-list.component";
 import { RegisterComponent } from "../register/register.component";
 import { LoginComponent } from "../login/login.component";
-import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../auth.service';
+import { addIcons } from 'ionicons';
+import { logInOutline, logOutOutline, personAddOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-home',
@@ -28,26 +31,22 @@ import { HttpClient } from '@angular/common/http';
     IonButton,
     IonButtons,
     IonModal,
+    IonMenu,
+    IonMenuButton,
+    IonIcon,
     ProductListComponent,
     RegisterComponent,
     LoginComponent
-]
+  ]
 })
-export class HomePage implements OnInit{
+export class HomePage {
   authService = inject(AuthService);
   isRegisterOpen = false;
   isLoginOpen = false;
-  http = inject(HttpClient)
 
-  ngOnInit(): void {
-    this.http.get<{user: UserInterface}>('https://api.realworld.io/api/users').subscribe({
-      next: (response) => {
-        this.authService.currentUserSignal.set(response.user);
-      },
-      error: () => {
-        this.authService.currentUserSignal.set(null);
-      },}
-    );
+  constructor() {
+    // Додаємо іконки
+    addIcons({ logInOutline, logOutOutline, personAddOutline });
   }
 
   openRegisterModal() {
@@ -65,8 +64,16 @@ export class HomePage implements OnInit{
   closeLoginModal() {
     this.isLoginOpen = false;
   }
+
   logOut() {
-    localStorage.setItem('token', '');
-    this.authService.currentUserSignal.set(null);
+    this.authService.logout();
+  }
+
+  get isAuthenticated(): boolean {
+    return this.authService.currentUserSignal() !== null;
+  }
+
+  get currentUser(): string {
+    return this.authService.currentUserSignal()?.username || '';
   }
 }

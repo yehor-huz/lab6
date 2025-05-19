@@ -1,46 +1,46 @@
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
-import { IonItem, IonLabel, IonInput, IonButton, IonList } from "@ionic/angular/standalone";
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { UserInterface } from '../user.interface';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { IonButton, IonLabel, IonItem, IonInput } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  standalone: true,
-  imports: [IonButton, IonItem, IonLabel, IonInput, IonButton, ReactiveFormsModule ],
-  providers: [FormBuilder]
+  imports: [IonButton, IonLabel, IonItem, IonInput, ReactiveFormsModule ]
 })
 export class LoginComponent {
-  @Output() success = new EventEmitter<void>();
-  http = inject(HttpClient);
   loginForm: FormGroup;
-  authService = inject(AuthService);
-  router = inject(Router);
+  errorMessage = '';
+  isLoading = false;
 
-  constructor(private fb: FormBuilder) {
-    this.loginForm = this.fb.nonNullable.group(
-      {
-        email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(4)]]
-      }
-    );
-   }
-
-  onSubmit(): void{
-    this.http.post<{user: UserInterface}>('https://api.realworld.io/api/users/login', {
-      user: this.loginForm.getRawValue(),
-    }).subscribe(
-      (response) => {
-        localStorage.setItem('token', response.user.token);
-        this.authService.currentUserSignal.set(response.user);
-        this.success.emit();
-        this.router.navigateByUrl('/');
-      }
-    )
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]]
+    });
   }
 
+  onSubmit(): void {
+    if (this.loginForm.invalid || this.isLoading) return;
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    try {
+      const response = this.authService.login(this.loginForm.value);
+      localStorage.setItem('token', response.user.token);
+      this.authService.currentUserSignal.set(response.user);
+      this.router.navigateByUrl('/');
+    } catch (err) {
+      this.errorMessage = err instanceof Error ? err.message : 'Login failed';
+    } finally {
+      this.isLoading = false;
+    }
+  }
 }

@@ -9,7 +9,7 @@ import { CommonModule, NgIf } from '@angular/common';
 import {
   IonButton, IonCard, IonCardContent, IonCardHeader,
   IonCardSubtitle, IonCardTitle, IonContent, IonItem,
-  IonList, IonLabel, IonSelectOption, IonCheckbox, IonModal, IonButtons, IonToolbar, IonHeader, IonTitle } from '@ionic/angular/standalone';
+  IonList, IonLabel, IonSelectOption, IonCheckbox, IonModal, IonButtons, IonToolbar, IonHeader, IonTitle, IonIcon, IonRadio, IonRadioGroup } from '@ionic/angular/standalone';
 import { AddProductComponent } from '../add-product/add-product.component';
 import { EditProductComponent } from "../edit-product/edit-product.component";
 import { Drinks } from '../drinks';
@@ -19,7 +19,7 @@ import { AuthService } from '../auth.service';
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [IonTitle, IonHeader, IonToolbar, IonButtons,
+  imports: [IonRadioGroup, IonRadio, IonIcon, IonTitle, IonHeader, IonToolbar, IonButtons,
     IonCheckbox, IonLabel, IonModal,
     IonButton, IonList, IonCardSubtitle, IonCardTitle,
     IonContent, IonCard, IonCardHeader, IonCardContent,
